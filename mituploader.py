@@ -8,6 +8,7 @@ dir = os.path.dirname(sys.executable)
 #Check if users.txt exists
 if not os.path.isfile(dir + "\\users.txt"):
     print("No users.txt found in current directory. Exiting...")
+    input("Press Enter to close...")
     sys.exit()
 
 #Get list of users
@@ -20,6 +21,7 @@ with open(dir + "\\users.txt", 'r') as f:
 #Check if users.txt is empty
 if len(users) == 0: 
     print("No users found. Exiting...")
+    input("Press Enter to close...")
     sys.exit()
 
 #Get list of files
@@ -31,6 +33,7 @@ for path in os.listdir(dir):
 #Check if project files exist
 if len(filePaths) == 0: 
     print("No files to upload found. Exiting...")
+    input("Press Enter to close...")
     sys.exit()
 
 #Send each file to each user
@@ -66,3 +69,5 @@ for user, blocks in users.items():
 
         session.close()
         print("Send " + filePath + " to " + user)
+
+input("Press Enter to close...")
