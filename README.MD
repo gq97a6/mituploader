@@ -1,17 +1,18 @@
 # MITUPLOADER
+Batch upload files to multiple MIT App Inventor accounts.
 
-##### Batch upload files to multiple MIT App Inventor accounts
+### How it works:
 - uploads ***ALL*** files in current directory with **.aia** extension
-- uploads to users listed in users.txt
+- uploads to users listed in users.txt located in current directory
 
-#### Example users.txt
+### Example users.txt:
 ```sh
 user0:AAA-BBB-CCC-DDD
 user1:AAA-BBB-CCC-DDD
 user2:AAA-BBB-CCC-DDD
 ```
 
-#### Example working three
+### Example working three:
 ```sh
 ├── group1
 |   ├── mituploader.exe
