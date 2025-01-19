@@ -6,14 +6,14 @@ Batch upload files to multiple MIT App Inventor accounts.
 - uploads to users listed in users.txt located in current directory
 
 ### Example users.txt:
-```sh
+```text
 user0:AAA-BBB-CCC-DDD
 user1:AAA-BBB-CCC-DDD
 user2:AAA-BBB-CCC-DDD
 ```
 
 ### Example working three:
-```sh
+```text
 ├── group1
 |   ├── mituploader.exe
 |   ├── users.txt
