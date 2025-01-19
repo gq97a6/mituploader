@@ -58,7 +58,7 @@ for user, blocks in users.items():
             break
 
         with open(dir + "//" + filePath, 'rb') as file:
-            payload = {'uploadProjectArchive': ('file.bin', file, 'application/octet-stream')}
+            payload = {'uploadProjectArchive': (filePath, file, 'application/octet-stream')}
             url = 'https://code.appinventor.mit.edu/ode/upload/project/' + filePath[:-4]
             response = session.post(url, files = payload)
 
