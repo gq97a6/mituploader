@@ -5,6 +5,11 @@ import sys
 #Get current working dir
 dir = os.path.dirname(sys.executable)
 
+#Check if users.txt exists
+if not os.path.isfile(dir + "\\users.txt"):
+    print("No users.txt found in current directory. Exiting...")
+    sys.exit()
+
 #Get list of users
 users = {}
 with open(dir + "\\users.txt", 'r') as f:
@@ -12,18 +17,28 @@ with open(dir + "\\users.txt", 'r') as f:
         parts = line.strip().split(':')
         users[parts[0]] = parts[1].split('-')
 
+#Check if users.txt is empty
+if len(users) == 0: 
+    print("No users found. Exiting...")
+    sys.exit()
+
 #Get list of files
-files = []
-for file in os.listdir(dir):
-    if file.endswith(".aia"):
-        files.append(file)
+filePaths = []
+for path in os.listdir(dir):
+    if path.endswith(".aia"):
+        filePaths.append(path)
+
+#Check if project files exist
+if len(filePaths) == 0: 
+    print("No files to upload found. Exiting...")
+    sys.exit()
 
 #Send each file to each user
 for user, blocks in users.items():
-    for file in files:
+    for filePath in filePaths:
         session = requests.Session()
-        session.post(
-            "http://code.appinventor.mit.edu/login", 
+        response = session.post(
+            "https://code.appinventor.mit.edu/login",
             data = {
                 "A": blocks[0],
                 "B": blocks[1],
@@ -34,10 +49,20 @@ for user, blocks in users.items():
                 "host": "code.appinventor.mit.edu"
         })
 
-        with open(dir + "//" + file, 'rb') as f:
-            payload = {'uploadProjectArchive': ('file.aia', f)}
-            url = 'http://code.appinventor.mit.edu/ode/upload/project/' + file[:-4]
-            session.post(url, data = {'host': 'code.appinventor.mit.edu'}, files = payload)
-        
+        if response.status_code != 200:
+            print("Failed to login as " + user)
+            session.close()
+            break
+
+        with open(dir + "//" + filePath, 'rb') as file:
+            payload = {'uploadProjectArchive': ('file.bin', file, 'application/octet-stream')}
+            url = 'https://code.appinventor.mit.edu/ode/upload/project/' + filePath[:-4]
+            response = session.post(url, files = payload)
+
+            if response.status_code != 200:
+                print("Failed to upload " + filePath + " to " + user)
+                session.close()
+                break
+
         session.close()
-    print("Send to " + user)
+        print("Send " + filePath + " to " + user)
